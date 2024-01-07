@@ -137,7 +137,7 @@
 //#define BLUETOOTH
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Ender3 Custom 1.6.24.1"  //morganiron
+#define CUSTOM_MACHINE_NAME "Ender3 Custom 1.6.24.4"  //morganiron
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
