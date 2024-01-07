@@ -1041,13 +1041,14 @@
 #if ENABLED(ASSISTED_TRAMMING)
 
   // Define positions for probe points.
-  #define TRAMMING_POINT_XY { {  20, 30 }, { 148,  30 }, { 148, 210 }, { 20, 210 } }
+  #define TRAMMING_POINT_XY { {  20, 30 }, { 148,  30 }, { 148, 210 }, { 20, 210 }, {X_BED_SIZE/2, Y_BED_SIZE/2} }
 
   // Define position names for probe points.
   #define TRAMMING_POINT_NAME_1 "Front-Left"
   #define TRAMMING_POINT_NAME_2 "Front-Right"
   #define TRAMMING_POINT_NAME_3 "Back-Right"
   #define TRAMMING_POINT_NAME_4 "Back-Left"
+  #define TRAMMING_POINT_NAME_5 "Center"
 
   #define RESTORE_LEVELING_AFTER_G35    // Enable to restore leveling setup after operation
   #define REPORT_TRAMMING_MM          // Report Z deviation (mm) for each point relative to the first
@@ -1089,8 +1090,8 @@
  *  X<1>         Set the given parameters only for the X axis.
  *  Y<1>         Set the given parameters only for the Y axis.
  */
-// #define INPUT_SHAPING_X
-// #define INPUT_SHAPING_Y
+#define INPUT_SHAPING_X //morganiron
+#define INPUT_SHAPING_Y //morganiron
 #if EITHER(INPUT_SHAPING_X, INPUT_SHAPING_Y)
   #if ENABLED(INPUT_SHAPING_X)
     #define SHAPING_FREQ_X  40          // (Hz) The default dominant resonant frequency on the X axis.
@@ -1280,7 +1281,7 @@
  * vibration and surface artifacts. The algorithm adapts to provide the best possible step smoothing at the
  * lowest stepping frequencies.
  */
-#define ADAPTIVE_STEP_SMOOTHING //morganiron
+// #define ADAPTIVE_STEP_SMOOTHING //morganiron
 
 /**
  * Custom Microstepping
