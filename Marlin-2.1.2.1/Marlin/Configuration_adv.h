@@ -384,7 +384,7 @@
 #if ENABLED(PIDTEMP)
   // Add an experimental additional term to the heater power, proportional to the extrusion speed.
   // A well-chosen Kc value should add just enough power to melt the increased material volume.
-  // #define PID_EXTRUSION_SCALING  //morganiron (this was on, turned it off to see if it helps extrusion issues)
+  // #define PID_EXTRUSION_SCALING  //morganiron (keeping off now that I'm trying MPCTEMP)
   #if ENABLED(PID_EXTRUSION_SCALING)
     #define DEFAULT_Kc (100) // heating power = Kc * e_speed
     #define LPQ_MAX_LEN 50
@@ -418,7 +418,7 @@
    * 5. Enable PID_FAN_SCALING_ALTERNATIVE_DEFINITION and enter the two identified Kf-values in
    *    PID_FAN_SCALING_AT_FULL_SPEED and PID_FAN_SCALING_AT_MIN_SPEED. Enter the minimum speed in PID_FAN_SCALING_MIN_SPEED
    */
-  // #define PID_FAN_SCALING  //morganiron (this was on, turned it off to see if it helps extrusion issues)
+  // #define PID_FAN_SCALING  //morganiron (turning off, now that I'm trying MPCTEMP)
   #if ENABLED(PID_FAN_SCALING)
     //#define PID_FAN_SCALING_ALTERNATIVE_DEFINITION
     #if ENABLED(PID_FAN_SCALING_ALTERNATIVE_DEFINITION)
@@ -500,7 +500,7 @@
  * the minimum temperature your thermistor can read. The lower the better/safer.
  * This shouldn't need to be more than 30 seconds (30000)
  */
-// #define MILLISECONDS_PREHEAT_TIME 2500 //morganiron (this was on, turned it off to match pro config)
+// #define MILLISECONDS_PREHEAT_TIME 2500 //morganiron (this was on, turned it off to match ender pro config)
 
 // @section extruder
 
@@ -1041,14 +1041,14 @@
 #if ENABLED(ASSISTED_TRAMMING)
 
   // Define positions for probe points.
-  #define TRAMMING_POINT_XY { {X_CENTER-5, Y_CENTER-5}, {  20, 30 }, { 148,  30 }, { 148, 210 }, { 20, 210 }  } //morganiron (offsets for smaller bed size)
+  #define TRAMMING_POINT_XY { {X_CENTER, Y_CENTER}, { 30, 199 }, { 187,  35 }, { 187, 199 },{  30, 35 }  } //morganiron (offsets adjusted with probe offsets)
 
   // Define position names for probe points.
   #define TRAMMING_POINT_NAME_1 "Center"
-  #define TRAMMING_POINT_NAME_2 "Front-Left"
+  #define TRAMMING_POINT_NAME_2 "Back-Left"
   #define TRAMMING_POINT_NAME_3 "Front-Right"
   #define TRAMMING_POINT_NAME_4 "Back-Right"
-  #define TRAMMING_POINT_NAME_5 "Back-Left"
+  #define TRAMMING_POINT_NAME_5 "Front-Left"
  
 
   #define RESTORE_LEVELING_AFTER_G35    // Enable to restore leveling setup after operation
@@ -1093,14 +1093,14 @@
  */
 #define INPUT_SHAPING_X //morganiron
 #define INPUT_SHAPING_Y //morganiron
-#if EITHER(INPUT_SHAPING_X, INPUT_SHAPING_Y)
+#if EITHER(INPUT_SHAPING_X, INPUT_SHAPING_Y) //morganiron (These are the settings for my setup, I will comment out the defaults)
   #if ENABLED(INPUT_SHAPING_X)
-    #define SHAPING_FREQ_X  40          // (Hz) The default dominant resonant frequency on the X axis.
-    #define SHAPING_ZETA_X  0.15f       // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #define SHAPING_FREQ_X  49.01 //40          // (Hz) The default dominant resonant frequency on the X axis.
+    #define SHAPING_ZETA_X  0.40f //0.15f       // Damping ratio of the X axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   #if ENABLED(INPUT_SHAPING_Y)
-    #define SHAPING_FREQ_Y  40          // (Hz) The default dominant resonant frequency on the Y axis.
-    #define SHAPING_ZETA_Y  0.15f       // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
+    #define SHAPING_FREQ_Y  36.51 //40          // (Hz) The default dominant resonant frequency on the Y axis.
+    #define SHAPING_ZETA_Y  0.25f //0.15f       // Damping ratio of the Y axis (range: 0.0 = no damping to 1.0 = critical damping).
   #endif
   //#define SHAPING_MIN_FREQ  20        // By default the minimum of the shaping frequencies. Override to affect SRAM usage.
   //#define SHAPING_MAX_STEPRATE 10000  // By default the maximum total step rate of the shaped axes. Override to affect SRAM usage.
@@ -1296,7 +1296,7 @@
 //#define MICROSTEP32 HIGH,LOW,HIGH
 
 // Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
-#define MICROSTEP_MODES { 16, 16, 16, 16, 16, 16 } // [1,2,4,8,16]
+#define MICROSTEP_MODES { 64, 64, 64, 64, 64, 64 } // [1,2,4,8,16] //morganiron (so, apparently the HR4988 drivers support up to 128x microstepping?)
 
 /**
  *  @section  stepper motor current
@@ -1396,7 +1396,7 @@
     #define PROBE_OFFSET_WIZARD_START_Z 1 //morganiron
 
     // Set a convenient position to do the calibration (probing point and nozzle/bed-distance)
-    #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER-5, Y_CENTER-5 } //morganiron
+    #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER } //morganiron
   #endif
 #endif
 
@@ -1729,7 +1729,7 @@
    * Use 'M503 C' to write the settings out to the SD Card as 'mc.zip'.
    * See docs/ConfigEmbedding.md for details on how to use 'mc-apply.py'.
    */
-  //#define CONFIGURATION_EMBEDDING
+  #define CONFIGURATION_EMBEDDING //morganiron
 
   // Add an optimized binary file transfer mode, initiated with 'M28 B1'
   //#define BINARY_FILE_TRANSFER
@@ -2118,12 +2118,12 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#define LIN_ADVANCE //morganiron (pro has this turned off, I'm leaving it on)
+#define LIN_ADVANCE //morganiron 
 #if ENABLED(LIN_ADVANCE)
   #if ENABLED(DISTINCT_E_FACTORS)
     #define ADVANCE_K { 0.22 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
   #else
-    #define ADVANCE_K 0.055        //morganiron (this is specific to my machine's setup) (mm) Compression length applying to all extruders
+    #define ADVANCE_K 0.21       //morganiron (this is specific to my machine's setup) (mm) Compression length applying to all extruders
   #endif
   //#define ADVANCE_K_EXTRA       // Add a second linear advance constant, configurable with M900 L.
   //#define LA_DEBUG              // Print debug information to serial during operation. Disable for production use.
@@ -2139,8 +2139,8 @@
  * For example, after homing a rotational axis the Z probe might not be perpendicular to the bed.
  * Choose values the orient the bed horizontally and the Z-probe vertically.
  */
-#define SAFE_BED_LEVELING_START_X 10.0  //morganiron
-#define SAFE_BED_LEVELING_START_Y 30.0  //morganiron
+#define SAFE_BED_LEVELING_START_X 30.0  //morganiron
+#define SAFE_BED_LEVELING_START_Y 35.0  //morganiron
 //#define SAFE_BED_LEVELING_START_Z 0.0
 //#define SAFE_BED_LEVELING_START_I 0.0
 //#define SAFE_BED_LEVELING_START_J 0.0
@@ -2183,7 +2183,7 @@
  */
 #if PROBE_SELECTED && !IS_KINEMATIC
   #define PROBING_MARGIN_LEFT 5
-  #define PROBING_MARGIN_RIGHT 10
+  #define PROBING_MARGIN_RIGHT 5
   #define PROBING_MARGIN_FRONT 30
   #define PROBING_MARGIN_BACK 10
 #endif
@@ -2320,7 +2320,7 @@
  * less step aliasing by calculating all motions in advance.
  * Preparing your G-code: https://github.com/colinrgodsey/step-daemon
  */
-//#define DIRECT_STEPPING //morganiron (I want to experiment with this to see if it helps)
+// #define DIRECT_STEPPING //morganiron (I want to experiment with this to see if it helps) (turned on in latest version)
 
 /**
  * G38 Probe Target
@@ -2336,7 +2336,7 @@
 #endif
 
 // Moves (or segments) with fewer steps than this will be joined with the next move
-#define MIN_STEPS_PER_SEGMENT 6
+#define MIN_STEPS_PER_SEGMENT 1 //morganiron (Someone said changing this to 1 seemed to help their issue?)
 
 /**
  * Minimum delay before and after setting the stepper DIR (in ns)
@@ -2351,8 +2351,8 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MINIMUM_STEPPER_POST_DIR_DELAY 650  //morganiron (maybe I should set this?)
-//#define MINIMUM_STEPPER_PRE_DIR_DELAY 650  //morganiron (maybe I should set this?)
+#define MINIMUM_STEPPER_POST_DIR_DELAY 500  //morganiron (maybe I should set this?) (setting with LV8729 settings)
+#define MINIMUM_STEPPER_PRE_DIR_DELAY 500  //morganiron (maybe I should set this?)
 
 /**
  * Minimum stepper driver pulse width (in µs)
@@ -2365,7 +2365,7 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MINIMUM_STEPPER_PULSE 2 //morganiron (and maybe this too?)
+#define MINIMUM_STEPPER_PULSE 0 //morganiron (and maybe this too?)
 
 /**
  * Maximum stepping rate (in Hz) the stepper driver allows
@@ -2379,7 +2379,7 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MAXIMUM_STEPPER_RATE 250000 //morganiron (maybe all of these?)
+#define MAXIMUM_STEPPER_RATE 1000000 //morganiron (maybe all of these?)
 
 // @section temperature
 
@@ -3653,7 +3653,7 @@
    * M200 D0 to disable, M200 Dn to set a new diameter (and enable volumetric).
    * M200 S0/S1 to disable/enable volumetric extrusion.
    */
-  // #define VOLUMETRIC_DEFAULT_ON  //morganiron (this was on, setting to off to match pro config (this might have been my issue?))
+  // #define VOLUMETRIC_DEFAULT_ON  //morganiron (This throws off my extrusion horribly)
 
   //#define VOLUMETRIC_EXTRUDER_LIMIT
   #if ENABLED(VOLUMETRIC_EXTRUDER_LIMIT)
